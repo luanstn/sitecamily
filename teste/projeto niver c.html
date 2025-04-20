@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Para Camily ❤️</title>
+  <button onclick="toggleModoNoturno()" id="botaoNoturno">🌙 Ativar Modo Noturno</button>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', cursive;
+      background: #ffe6f0;
+      overflow-x: hidden;
+    }
+
+    .coracoes {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .coracao {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      transform: rotate(45deg);
+      animation: flutuar 10s linear infinite;
+    }
+
+    .coracao::before,
+    .coracao::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      border-radius: 50%;
+    }
+
+    .coracao::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .coracao::after {
+      left: -10px;
+      top: 0;
+    }
+
+    @keyframes flutuar {
+      0% {
+        transform: translateY(100vh) rotate(45deg);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-10vh) rotate(45deg);
+        opacity: 0;
+      }
+    }
+
+    .container {
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2em;
+      color: #ff3366;
+    }
+
+    .contador {
+      font-size: 1.5em;
+      margin: 20px 0;
+      color: #ff6699;
+    }
+
+    .slide-container {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      margin: 30px auto 0 auto;
+    }
+
+    .slide {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .slide img {
+      max-width: 100%;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .fotos {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .foto-legenda img {
+      max-width: 300px;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+
+    .legenda {
+      margin-top: 8px;
+      font-size: 0.95em;
+      color: #cc3366;
+    }
+
+    .playlist {
+      margin: 20px auto;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    .mensagem {
+      background-color: #fff0f5;
+      border: 2px dashed #ff99cc;
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 30px;
+      font-size: 1.1em;
+      color: #cc3366;
+    }
+
+    button {
+      background-color: #ff66a3;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      margin: 10px 5px;
+      border-radius: 20px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #ff3385;
+    }
+
+    @media (max-width: 600px) {
+      .slide-container {
+        max-width: 90%;
+      }
+
+      .foto-legenda img {
+        max-width: 90%;
+      }
+    }
+    #cronometroTempo {
+  font-size: 1em; /* diminui o tamanho da fonte */
+  color: #cc3366; /* tom romântico que combina com o resto */
+  margin: 10px auto; /* espaço ao redor */
+  text-align: center; /* centraliza o texto */
+  max-width: 90%; /* evita que ocupe a tela toda em celulares */
+  line-height: 1.4;
+}
+#cronometroTempo {
+  font-size: 1em;
+  color: #cc3366;
+  margin: 10px auto;
+  text-align: center;
+  max-width: 90%;
+  line-height: 1.4;
+  background-color: #fff0f5;
+  border: 2px dashed #ff99cc;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+body.modo-noturno {
+  background-color: #0d0d1a;
+  color: #fff0f5;
+  transition: background 0.5s, color 0.5s;
+}
+
+.estrelas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.estrela {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: white;
+  border-radius: 50%;
+  animation: brilhar 2s infinite ease-in-out;
+}
+
+@keyframes brilhar {
+  0%, 100% { opacity: 0.2; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.5); }
+}
+
+#botaoNoturno {
+  background-color: #333;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+
+#botaoNoturno:hover {
+  background-color: #555;
+}
+
+
+  </style>
+</head>
+<body>
+
+  <div class="coracoes">
+    <script>
+      for (let i = 0; i < 50; i++) {
+        const heart = document.createElement('div');
+        heart.className = 'coracao';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.animationDuration = (5 + Math.random() * 5) + 's';
+        document.querySelector('.coracoes').appendChild(heart);
+      }
+    </script>
+  </div>
+
+  <div class="container">
+    <h1>Oi minha princesinha! 💕</h1>
+
+    <div class="contador">
+      Te estressando há <span id="diasJuntos"></span> dias 🥰
+    </div>
+
+    <div class="fotos">
+      <div class="foto-legenda">
+        <img src="arq/fotos/primeiroencontro.jpeg" alt="nosso primeiro encontro">
+        <p class="legenda">Nosso primeiro encontro, nesse dia a gente se divertiu bastante e eu tinha certeza que te queria comigo sempre, sempre foi você! 💖</p>
+      </div>
+      <div class="foto-legenda">
+        <img src="arq/fotos/tituloeleitor.jpeg" alt="Outro momento especial">
+        <p class="legenda">esse dia foi uma mistura de estresse e paz, com certeza seria um tédio se eu não estivesse com você</p>
+      </div>
+      <div class="foto-legenda">
+        <img src="arq/fotos/primeirobeijo.jpeg" alt="Mais um momento">
+        <p class="legenda">o dia em que demos nosso primeiro beijo, ainda lembro de você saindo toda sem graça, eu acabei roubando sem querer kkkkkkk, eu amo tudo na gente, você é demais</p>
+      </div>
+      <div class="foto-legenda">
+        <img src="arq/fotos/mariabonita.jpeg" alt="Outro dia lindo">
+        <p class="legenda">espero passsar todos os são joão da minha vida com você, minha maria bonita😊</p>
+      </div>
+      <div class="foto-legenda">
+        <img src="arq/fotos/olhinhos.jpeg" alt="Outro dia lindo">
+        <p class="legenda">os olhinhos mais lindos de todooo o universo</p>
+      </div>
+      <div class="foto-legenda">
+        <img src="arq/fotos/euteamo.jpeg" alt="Outro dia lindo">
+        <p class="legenda"> EU TE AMO MINHA MENINA💖</p>
+      </div>
+    </div>
+
+    <div class="playlist">
+      <iframe style="border-radius:12px" 
+        src="https://open.spotify.com/embed/track/0ZPquQV2aKmDfwPjvMdvRp?utm_source=generator" 
+        width="100%" height="80" frameBorder="0" 
+        allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+        loading="lazy">
+      </iframe>
+    </div>
+    
+    <div class="playlist">
+        <iframe style="border-radius:12px" 
+          src="https://open.spotify.com/embed/track/7KA4W4McWYRpgf0fWsJZWB?utm_source=generator" 
+          width="100%" height="80" frameBorder="0" 
+          allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+          loading="lazy">
+        </iframe>
+      </div>
+
+      <div class="playlist">
+        <iframe style="border-radius:12px" 
+          src="https://open.spotify.com/embed/track/3SdTKo2uVsxFblQjpScoHy?utm_source=generator"
+          width="100%" height="80" frameBorder="0" 
+          allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+          loading="lazy">
+        </iframe>
+      </div>
+
+      <div class="playlist">
+        <iframe style="border-radius:12px" 
+          src="https://open.spotify.com/embed/track/6Qyc6fS4DsZjB2mRW9DsQs?utm_source=generator"
+          width="100%" height="80" frameBorder="0" 
+          allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+          loading="lazy">
+        </iframe>
+      </div>
+      
+
+    <div class="mensagem">
+      <p>oi minha menina, como você tá? espero que esteja bem, queria primeiramente te desejar um feliz aniversário, espero que esse dia seja muitooo bom, legal e especial, assim como você é para mim. não poderia deixar de agradecer por tudo que você já fez por mim, todas as coisas.
+    </div>
+
+    <div class="slide-container">
+      <div class="slide">
+        <img src="arq/fotos/napraça.jpeg" alt="Foto 1">
+        <p class="legenda">não importa onde estejamos, nem a distância entre a gente, saiba que sempre estarei aqui torcendo por você. 💖</p>
+      </div>
+      <div class="slide">
+        <img src="arq/fotos/primeiroencontro.jpeg" alt="Foto 2">
+        <p class="legenda">no cinema</p>
+      </div>
+      <div class="slide">
+        <img src="arq/fotos/nosmatos.jpeg" alt="Foto 3">
+        <p class="legenda">nos sítios kkkkkkkk</p>
+      </div>
+      <div class="slide">
+        <img src="arq/fotos/noparque.jpeg" alt="Foto 4">
+        <p class="legenda">no parque</p>
+      </div>
+      <div class="slide">
+        <img src="arq/fotos/comraylson.jpeg" alt="Foto 5">
+        <p class="legenda">com meus gordinhos</p>
+      </div>
+      <div class="slide">
+        <img src="arq/fotos/osolhinhos.jpeg" alt="Foto 6">
+        <p class="legenda">os olhinhos mais lindos que eu já vi</p>
+      </div>
+      <div class="slide">
+        <img src="arq/fotos/napraia.jpeg" alt="Foto 7">
+        <p class="legenda">na praia</p>
+      </div>
+      <div class="slide">
+        <img src="arq/fotos/abraço.jpeg" alt="Foto 8">
+        <p class="legenda">o abraço mais gostoso do mundo</p>
+      </div>
+      <div class="slide">
+        <img src="arq/fotos/hallowen.jpeg" alt="Foto 9">
+        <p class="legenda">até no hallowen por mais que você tivesse ficado com raivaaa kkkkk</p>
+      </div>
+      <div class="slide">
+        <img src="arq/fotos/enem.jpeg" alt="Foto 10">
+        <p class="legenda">no enem</p>
+      </div>
+      <div class="slide">
+        <img src="arq/fotos/com sobrinhos.jpeg" alt="Foto 11">
+        <p class="legenda">obrigado por cuidar tão bem de mim e das pessoas que eu amo, todos esses momentos são tão especiais e inesquecíveis pois é com você. com você tudo é mais especial.💖</p>
+      </div>
+      <div class="slide">
+    <img src="arq/fotos/começo.jpeg" alt="Foto 11">
+        <p class="legenda">te amei no começo</p>
+      </div>
+      <div class="slide">
+      <img src="arq/fotos/cadanovomomento.jpeg" alt="foto 11">
+        <p class="legenda">te amo agora</p>
+      </div>
+      <div class="slide">
+      <img src="arq/fotos/agora.jpeg" alt="Foto 11">
+        <p class="legenda">e vou continuar amando em cada novo momento</p>
+      </div>
+
+
+      <!-- Botões -->
+      <div style="text-align: center;">
+        <button onclick="slideAnterior()">Anterior</button>
+        <button onclick="slideProximo()">Próximo</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const dataInicio = new Date("2024-07-31");
+    const hoje = new Date();
+    const diferenca = Math.floor((hoje - dataInicio) / (1000 * 60 * 60 * 24));
+    document.getElementById("diasJuntos").textContent = diferenca;
+
+    let slideIndex = 0;
+    const slides = document.querySelectorAll('.slide');
+
+    function mostrarSlideManual(index) {
+      slides.forEach(slide => slide.style.display = 'none');
+      slides[index].style.display = 'flex';
+    }
+
+    function slideAnterior() {
+      slideIndex = (slideIndex - 1 + slides.length) % slides.length;
+      mostrarSlideManual(slideIndex);
+    }
+
+    function slideProximo() {
+      slideIndex = (slideIndex + 1) % slides.length;
+      mostrarSlideManual(slideIndex);
+    }
+
+    mostrarSlideManual(slideIndex);
+  </script>
+
+  <audio autoplay loop>
+    <source src="musica/ultimo_romance.mp3" type="audio/mpeg">
+    Seu navegador não suporta áudio :(
+  </audio>
+
+  <div class="contador" id="cronometroTempo"></div>
+<script>
+  function atualizarCronometro() {
+    const agora = new Date();
+    const diferencaMs = agora - dataInicio;
+
+    const dias = Math.floor(diferencaMs / (1000 * 60 * 60 * 24));
+    const horas = Math.floor((diferencaMs / (1000 * 60 * 60)) % 24);
+    const minutos = Math.floor((diferencaMs / (1000 * 60)) % 60);
+    const segundos = Math.floor((diferencaMs / 1000) % 60);
+
+    document.getElementById("cronometroTempo").innerHTML = 
+      `Estamos juntos há ${dias} dias, ${horas} horas, ${minutos} minutos e ${segundos} segundos, e há cada segundo que passa eu só te amo mais💖`;
+  }
+
+  setInterval(atualizarCronometro, 1000);
+  atualizarCronometro();
+ </script>
+  <script>
+  function toggleModoNoturno() {
+    const body = document.body;
+    const botao = document.getElementById('botaoNoturno');
+
+    body.classList.toggle('modo-noturno');
+
+    if (body.classList.contains('modo-noturno')) {
+      botao.textContent = '☀️ Voltar ao Modo Claro';
+      criarEstrelas();
+    } else {
+      botao.textContent = '🌙 Ativar Modo Noturno';
+      removerEstrelas();
+    }
+  }
+
+  function criarEstrelas() {
+    const estrelasContainer = document.createElement('div');
+    estrelasContainer.classList.add('estrelas');
+    estrelasContainer.id = 'estrelas-container';
+
+    for (let i = 0; i < 100; i++) {
+      const estrela = document.createElement('div');
+      estrela.classList.add('estrela');
+      estrela.style.left = `${Math.random() * 100}vw`;
+      estrela.style.top = `${Math.random() * 100}vh`;
+      estrela.style.animationDuration = `${1 + Math.random() * 3}s`;
+      estrelasContainer.appendChild(estrela);
+    }
+
+    document.body.appendChild(estrelasContainer);
+  }
+
+  function removerEstrelas() {
+    const estrelas = document.getElementById('estrelas-container');
+    if (estrelas) estrelas.remove();
+  }
+
+  </script>
+</script>
+
+<video width="100%" controls style="border-radius: 20px; box-shadow: 0 0 10px pink;">
+    <source src="arq/videos/nossovideo.mp4" type="video/mp4">
+    Seu navegador não suporta vídeo 😢
+  </video>
+</body>
+</html>
